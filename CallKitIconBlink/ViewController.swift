@@ -28,7 +28,11 @@ class ViewController: UIViewController, CXProviderDelegate {
         } else {
             // Fallback on earlier versions
         }
-//        providerConfiguration.iconTemplateImageData = xx
+
+        // icons from https://github.com/Lax/Learn-iOS-Swift-by-Examples/tree/master/Speakerbox/Speakerbox/Assets.xcassets/IconMask.imageset
+        if let imageData = UIImage(named: "callkit-icon")?.pngData() {
+            providerConfiguration.iconTemplateImageData = imageData 
+        }
         
         self.provider = CXProvider(configuration: providerConfiguration)
         
@@ -59,7 +63,5 @@ class ViewController: UIViewController, CXProviderDelegate {
     func providerDidReset(_ provider: CXProvider) {
         
     }
-
-
 }
 
