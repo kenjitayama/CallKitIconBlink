@@ -19,15 +19,6 @@ class ViewController: UIViewController, CXProviderDelegate {
     required init?(coder: NSCoder) {
 
         let providerConfiguration = CXProviderConfiguration(localizedName: "Example")
-        providerConfiguration.supportsVideo = true
-        providerConfiguration.maximumCallGroups = 1
-        providerConfiguration.maximumCallsPerCallGroup = 1
-        providerConfiguration.supportedHandleTypes = [.generic]
-        if #available(iOS 11.0, *) {
-            providerConfiguration.includesCallsInRecents = false
-        } else {
-            // Fallback on earlier versions
-        }
 
         // icons from https://github.com/Lax/Learn-iOS-Swift-by-Examples/tree/master/Speakerbox/Speakerbox/Assets.xcassets/IconMask.imageset
         if let imageData = UIImage(named: "callkit-icon")?.pngData() {
