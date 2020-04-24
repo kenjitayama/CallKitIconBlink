@@ -54,5 +54,9 @@ class ViewController: UIViewController, CXProviderDelegate {
     func providerDidReset(_ provider: CXProvider) {
         
     }
+    
+    func provider(_ provider: CXProvider, perform action: CXSetMutedCallAction) {
+        action.fulfill()
+    }    
 }
 
