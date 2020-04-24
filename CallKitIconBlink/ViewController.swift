@@ -7,12 +7,57 @@
 //
 
 import UIKit
+import CallKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, CXProviderDelegate {
+    
+    private let callController = CXCallController(queue: .main)
+    private let provider: CXProvider
+    
+    private let callingUUID = UUID()
+    
+    required init?(coder: NSCoder) {
+
+        let providerConfiguration = CXProviderConfiguration(localizedName: "Example")
+        providerConfiguration.supportsVideo = true
+        providerConfiguration.maximumCallGroups = 1
+        providerConfiguration.maximumCallsPerCallGroup = 1
+        providerConfiguration.supportedHandleTypes = [.generic]
+        if #available(iOS 11.0, *) {
+            providerConfiguration.includesCallsInRecents = false
+        } else {
+            // Fallback on earlier versions
+        }
+//        providerConfiguration.iconTemplateImageData = xx
+        
+        self.provider = CXProvider(configuration: providerConfiguration)
+        
+        super.init(coder: coder)
+        
+        provider.setDelegate(self, queue: DispatchQueue.main)
+    }
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        
+        let handle = CXHandle(type: .generic, value: "John Appleseed")
+        let startCallAction = CXStartCallAction(call: callingUUID, handle: handle)
+        let transaction = CXTransaction(action: startCallAction)
+        
+        self.callController.request(transaction) { error in
+            
+            if let error = error {
+                print("CXStartCallAction error: \(error.localizedDescription)")
+            }
+        }
+    }
+
+    
+    // MARK: - CXProviderDelegate
+    
+    func providerDidReset(_ provider: CXProvider) {
+        
     }
 
 
